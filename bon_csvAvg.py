@@ -128,6 +128,10 @@ class BonnieDictReader(DictReader):
     
     def __next__(self):
         d = super(BonnieDictReader, self).__next__()
+        if all([k == v for k, v in d.items()]):
+            # Values and keys are equal, this is a header line so read the next
+            d = super(BonnieDictReader, self).__next__()
+
         if len(FIELDTYPES) >= len(d):
             # extract the values in the same order as the csv header
             ivalues = map(d.get, self._fieldnames) 
